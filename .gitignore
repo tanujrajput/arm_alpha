@@ -1,0 +1,15 @@
+# ROS 2 build and install directories
+build/
+install/
+log/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# VSCode or IDE configs
+.vscode/
+.idea/
+
+# Colcon metadata
+.colcon/
