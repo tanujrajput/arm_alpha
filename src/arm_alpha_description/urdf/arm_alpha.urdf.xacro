@@ -1,6 +1,15 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="arm_alpha">
 
+
+    <xacro:arg name="is_ignition" default="true"/>
+  
+    <!-- Include Gazebo Parameters -->
+    <xacro:include filename="$(find arm_alpha_description)/urdf/arm_alpha_gazebo.xacro" />
+
+    <!-- Include ros2_control Plugins -->
+    <xacro:include filename="$(find arm_alpha_description)/urdf/arm_alpha_ros2_control.xacro" />
+
   <!-- =============================
        Global Properties (Constants)
        ============================= -->

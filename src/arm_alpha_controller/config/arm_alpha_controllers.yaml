@@ -1,0 +1,79 @@
+# Controller Manager Configuration
+controller_manager:
+  ros__parameters:
+    # The update rate defines how often the controllers are updated (in Hz)
+    # Here, controllers will be updated every 0.1 seconds (10 Hz)
+    update_rate: 10
+
+    # Define the arm_controller, which controls the robot's main arm joints
+    arm_controller:
+      # Type of controller: uses a JointTrajectoryController
+      # This controller can receive trajectories (positions over time) for multiple joints
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    # Define the gripper_controller (commented out version is an alternative)
+    gripper_controller:
+      type: forward_command_controller/ForwardCommandController
+
+    # Active gripper_controller definition
+    # gripper_controller:
+    #   type: joint_trajectory_controller/JointTrajectoryController
+      # Similar to arm_controller, allows sending trajectory commands to gripper joints
+
+    # Define a broadcaster to publish joint states
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+      # This publishes the current position (and optionally velocity/effort)
+      # of all joints to the /joint_states topic for ROS 2 nodes like RViz and MoveIt
+
+---
+
+# Parameters specific to the arm_controller
+arm_controller:
+  ros__parameters:
+    # List of joints controlled by this controller
+    joints:
+      - joint_1
+      - joint_2
+      - joint_3
+
+    # Command interfaces specify which joint interfaces the controller can send commands to
+    command_interfaces:
+      - position  # Only controlling joint positions (no velocity or effort)
+
+    # State interfaces specify which joint interfaces the controller will read from the hardware
+    state_interfaces:
+      - position  # Reads the current joint positions
+
+    # Open-loop control allows sending commands without feedback from the hardware
+    open_loop_control: true
+
+    # Allow integration in goal trajectories
+    # This allows trajectory controllers to properly execute multi-point goals
+    allow_integration_in_goal_trajectories: true
+
+---
+
+# Parameters specific to the gripper_controller
+gripper_controller:
+  ros__parameters:
+    # List of joints controlled by the gripper controller
+    joints:
+      - joint_4  # The gripper joint
+
+    # The interface name is commented out; using standard command_interfaces instead
+    interface_name: position
+
+    # # Command interface for controlling the joint
+    # command_interfaces:
+    #   - position  # Gripper controlled via position commands
+
+    # # State interface for reading joint state
+    # state_interfaces:
+    #   - position  # Reads current gripper joint position
+
+    # # Open-loop control (no feedback loop)
+    # open_loop_control: true
+
+    # # Allows trajectory integration
+    # allow_integration_in_goal_trajectories: true

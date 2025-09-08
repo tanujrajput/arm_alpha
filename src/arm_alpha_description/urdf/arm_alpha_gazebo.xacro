@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!-- 
+  This is the URDF/XACRO file defining the "arm_alpha" robot.
+  It primarily includes the robot name and the ROS 2 control plugin for simulation.
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="arm_alpha">
+  <!-- 
+    The root <robot> tag defines the robot.
+    - xmlns:xacro defines the XML namespace for XACRO macros.
+    - name="arm_alpha" sets the name of the robot used in ROS 2 and Gazebo.
+  -->
+
+  <!-- ROS 2 Control Integration -->
+  <gazebo>
+    <!-- This block adds Gazebo plugins to the robot for ROS 2 Control simulation -->
+
+    <!-- ROS 2 Humble (Ignition Gazebo) -->
+    <xacro:if value="$(arg is_ignition)">
+      <!-- 
+        If the argument `is_ignition` is true, we use Ignition Gazebo.
+        - filename: Specifies the plugin file to load.
+          "ign_ros2_control-system" is the Ignition ROS 2 Control plugin.
+        - name: The plugin’s name in the simulation.
+        - parameters: Path to the ROS 2 control configuration YAML file.
+          This YAML defines controllers for the robot joints, including type (position/velocity/effort),
+          joint names, gains, limits, etc.
+      -->
+      <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+        <parameters>$(find arm_alpha_controller)/config/arm_alpha_controllers.yaml</parameters>
+      </plugin>
+    </xacro:if>
+
+    <!-- ROS 2 Iron or above (Gazebo Classic / gz_sim) -->
+    <xacro:unless value="$(arg is_ignition)">
+      <!-- 
+        If `is_ignition` is false, we assume Gazebo Classic (or ROS 2 Iron+ using gz_sim).
+        - filename: "gz_ros2_control-system" is the Gazebo ROS 2 control plugin.
+        - name: Plugin name in Gazebo.
+        - parameters: Path to the same controllers YAML file as above.
+      -->
+      <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+        <parameters>$(find arm_alpha_controller)/config/arm_alpha_controllers.yaml</parameters>
+      </plugin>
+    </xacro:unless>
+  </gazebo>
+
+</robot>
