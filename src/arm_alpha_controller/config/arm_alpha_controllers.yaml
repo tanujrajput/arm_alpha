@@ -12,13 +12,13 @@ controller_manager:
       type: joint_trajectory_controller/JointTrajectoryController
 
     # Define the gripper_controller (commented out version is an alternative)
-    gripper_controller:
-      type: forward_command_controller/ForwardCommandController
+    # gripper_controller:
+    #   type: forward_command_controller/ForwardCommandController
 
     # Active gripper_controller definition
-    # gripper_controller:
-    #   type: joint_trajectory_controller/JointTrajectoryController
-      # Similar to arm_controller, allows sending trajectory commands to gripper joints
+    gripper_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+      # Similar to arm_controller, allows sending trajectory commands to gripper joint
 
     # Define a broadcaster to publish joint states
     joint_state_broadcaster:
@@ -62,18 +62,18 @@ gripper_controller:
       - joint_4  # The gripper joint
 
     # The interface name is commented out; using standard command_interfaces instead
-    interface_name: position
+    # interface_name: position
 
-    # # Command interface for controlling the joint
-    # command_interfaces:
-    #   - position  # Gripper controlled via position commands
+    # Command interface for controlling the joint
+    command_interfaces:
+      - position  # Gripper controlled via position commands
 
-    # # State interface for reading joint state
-    # state_interfaces:
-    #   - position  # Reads current gripper joint position
+    # State interface for reading joint state
+    state_interfaces:
+      - position  # Reads current gripper joint position
 
-    # # Open-loop control (no feedback loop)
-    # open_loop_control: true
+    # Open-loop control (no feedback loop)
+    open_loop_control: true
 
-    # # Allows trajectory integration
-    # allow_integration_in_goal_trajectories: true
+    # Allows trajectory integration
+    allow_integration_in_goal_trajectories: true
